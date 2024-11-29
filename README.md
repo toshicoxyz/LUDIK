@@ -68,6 +68,7 @@ Una vez que se haya ejecutado el comando `docker-compose up --build`, deberías 
 ```
 Starting backend ... done
 Starting frontend  ... done
+Starting database  ... :(
 ```
 
 Esto indica que los contenedores se han iniciado correctamente.
@@ -144,8 +145,10 @@ Si el contenedor del **frontend** no se levanta correctamente y encuentras algú
    Si encuentras problemas al levantar el contenedor del frontend, navega al directorio de frontend y ejecuta los siguientes comandos para forzar la instalación de dependencias:
 
    ```bash
-   cd LUDIK
+   cd LUDIK/frontend
    npm install --force
+   or
+   pnpm install
    ```
 
    El uso de `--force` puede resolver posibles conflictos de dependencias.
