@@ -47,8 +47,8 @@ services:
       - ./frontend/.env
     ports:
       - '3000:3000' # Exponer el puerto del frontend
-    volumes:
-      - ./frontend:/app
+    # volumes:
+    #   - ./frontend:/app
     command: pnpm run preview
     restart: always
 

@@ -5,6 +5,9 @@
 
 Me amaneci haciendo la prueba ya que tengo un trabajo temporal que me veo obligado hacer de noche :(, aun asi termine la primera etapa segun el tiempo elegi python para el backend ya q hace poco toque el lenguaje en odoo, decidi dockerizar el proyecto para que no tengas problemas de dependencias ya que se aisla el proyecto y tmb si me da tiempo la base de datos para que de un solo click puedas usar.
 
+# No se olviden de renombrar el .env.example -> .env para que se tome las credenciales :)
+# LA BASE DE DATOS CREADO POR CONTENEDOR TIENE ALGUNOS BUGS ;v no funciona por ahora
+
 ## Requisitos Previos
 
 Antes de comenzar, asegúrate de tener instalados los siguientes programas en tu máquina:
