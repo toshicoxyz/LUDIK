@@ -1,0 +1,39 @@
+version: '3'
+services:
+  api:
+    build:
+      context: ./backend # Ruta al directorio de backend
+    container_name: 'fastapi-postgres-container'
+    environment:
+      - DATABASE_URL=development # Asegúrate de tener este valor en tu archivo .env de backend
+    env_file:
+      - ./backend/.env # Ruta al archivo .env de backend
+    ports:
+      - '8020:8000' # Mapea el puerto 8000 del contenedor al 8020 de la máquina local
+    volumes:
+      - ./backend:/app # Sincroniza el código del backend con el contenedor para desarrollo en vivo
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - app-network # Definir la red a la que pertenecerá el servicio api
+
+  frontend:
+    build:
+      context: ./frontend # Ruta al directorio del frontend Nuxt.js
+    container_name: 'nuxt-app-container'
+    environment:
+      - VUE_APP_API_URL=http://0.0.0.0:8020 # Referirse al contenedor 'api' usando el nombre del servicio
+    env_file:
+      - ./frontend/.env # Asegúrate de tener las variables necesarias en el archivo .env del frontend
+    ports:
+      - '3020:3000' # Mapea el puerto 3000 del contenedor al 3020 de la máquina local
+    volumes:
+      - ./frontend:/app # Sincroniza el código del frontend con el contenedor - SOLO EN MODO DESARROLLO
+    command: npm run preview # Inicia el servidor de desarrollo de Nuxt.js
+    depends_on:
+      - api # Este servicio depende de que 'api' esté listo antes de iniciar
+    networks:
+      - app-network # Definir la red a la que pertenecerá el servicio frontend
+
+networks:
+  app-network:
+    driver: bridge # Usar una red puente para que los servicios puedan comunicarse entre sí
