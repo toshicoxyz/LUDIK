@@ -1,39 +1,58 @@
-version: '3'
+version: '2'
 services:
+  db:
+    image: postgres:15
+    container_name: database
+    user: root
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=2022      
+      - POSTGRES_DB=postgres
+    restart: always
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data # Volumen persistente para los datos
+      # - ./db/init:/docker-entrypoint-initdb.d
+    ports:
+      - '5450:5432' # Puerto expuesto para la base de datos
+
   api:
     build:
       context: ./backend # Ruta al directorio de backend
-    container_name: 'fastapi-postgres-container'
-    environment:
-      - DATABASE_URL=development # Asegúrate de tener este valor en tu archivo .env de backend
+    container_name: backend
+    depends_on:
+      - db # Esperar a que la base de datos esté lista antes de levantar este servicio
+    # environment:
+    #   - DB_USER=postgres
+    #   - DB_PASSWORD=2022
+    #   - DB_HOST=database
+    #   - DB_PORT=5450
+    #   - DB_NAME=todolist
     env_file:
-      - ./backend/.env # Ruta al archivo .env de backend
+      - ./backend/.env
     ports:
-      - '8020:8000' # Mapea el puerto 8000 del contenedor al 8020 de la máquina local
+      - '8000:8000' # Exponer el puerto del backend
     volumes:
-      - ./backend:/app # Sincroniza el código del backend con el contenedor para desarrollo en vivo
+      - ./backend:/app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-    networks:
-      - app-network # Definir la red a la que pertenecerá el servicio api
+    restart: always
 
   frontend:
     build:
-      context: ./frontend # Ruta al directorio del frontend Nuxt.js
-    container_name: 'nuxt-app-container'
-    environment:
-      - VUE_APP_API_URL=http://0.0.0.0:8020 # Referirse al contenedor 'api' usando el nombre del servicio
-    env_file:
-      - ./frontend/.env # Asegúrate de tener las variables necesarias en el archivo .env del frontend
-    ports:
-      - '3020:3000' # Mapea el puerto 3000 del contenedor al 3020 de la máquina local
-    volumes:
-      - ./frontend:/app # Sincroniza el código del frontend con el contenedor - SOLO EN MODO DESARROLLO
-    command: npm run preview # Inicia el servidor de desarrollo de Nuxt.js
+      context: ./frontend # Ruta al directorio de Nuxt.js
+    container_name: frontend
     depends_on:
-      - api # Este servicio depende de que 'api' esté listo antes de iniciar
-    networks:
-      - app-network # Definir la red a la que pertenecerá el servicio frontend
+      - api # Esperar a que la API esté lista antes de levantar este servicio
+    environment:
+      - NUXT_API_URL=http://localhost:8000 # URL para conectar el frontend con el backend
+    env_file:
+      - ./frontend/.env
+    ports:
+      - '3000:3000' # Exponer el puerto del frontend
+    # volumes:
+    #   - ./frontend:/app
+    command: pnpm run preview
+    restart: always
 
-networks:
-  app-network:
-    driver: bridge # Usar una red puente para que los servicios puedan comunicarse entre sí
+volumes:
+  postgres_data:
+    driver: local

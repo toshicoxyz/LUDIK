@@ -23,7 +23,7 @@ import { ref, onMounted, defineAsyncComponent } from 'vue';
 import axios from 'axios';
 
 const tasks = ref([]);
-const apiBaseUrl = 'http://localhost:8020/api/tasks';
+const apiBaseUrl = 'http://localhost:8000/api/tasks';
 const newTask = ref({ title: '', description: '', status: 'Pendiente' });
 const isEditing = ref(false);
 const editingTaskId = ref<number | null>(null);
