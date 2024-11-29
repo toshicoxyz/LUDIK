@@ -1,12 +1,12 @@
 <template>
     <div class="min-h-screen bg-gray-50 p-6">
         <header class="mb-6">
-            <h1 class="text-3xl font-bold text-center text-gray-700">Task Manager</h1>
+            <h1 class="text-3xl font-bold text-center text-gray-700">Administrador de Tareas</h1>
         </header>
 
         <!-- Indicador de Carga -->
         <div v-if="loading" class="text-center text-blue-500">
-            <span class="loader"></span> Loading tasks...
+            <span class="loader"></span> Cargando tareas...
         </div>
 
         <!-- Formulario -->
