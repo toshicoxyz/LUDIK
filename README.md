@@ -77,13 +77,13 @@ Esto indica que los contenedores se han iniciado correctamente.
 
 Si todo se ha ejecutado correctamente, ahora puedes acceder a tu aplicación en un navegador web.
 
-- **Backend**: Si el backend está configurado para correr en el puerto `8080`, abre tu navegador y accede a:  
-  `http://localhost:8020`
+- **Backend**: Si el backend está configurado para correr en el puerto `8000`, abre tu navegador y accede a:  
+  `http://localhost:8000`
   La documentación de las rutas
-  `http://localhost:8020/docs`
+  `http://localhost:8000/docs`
 
 - **Frontend**: Si el frontend está configurado para correr en el puerto `3000`, abre tu navegador y accede a:  
-  `http://localhost:3020`
+  `http://localhost:3000`
 
 (Estos puertos pueden variar dependiendo de la configuración de tu proyecto, así que revisa el archivo `docker-compose.yml` si no estás seguro).
 
